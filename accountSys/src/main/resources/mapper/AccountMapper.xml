@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.banksys.accountsys.dao.AccountMapper">
+    <select id="queryAccountByPage" resultType="com.banksys.accountsys.model.VO.AccountVO" parameterType="map">
+        SELECT account.id AS id,no,user_name,account_type,account.deposit_type,interestdic.deposit_name,interestdic.transfer,balance,account.interest,account.create_time
+        FROM account JOIN client
+        ON account.user_id = client.id
+        JOIN interestdic
+        ON account.deposit_type = interestdic.deposit_type
+        WHERE client.create_counter = #{id}
+        <if test="userName != null">
+            AND client.user_name LIKE CONCAT('%',#{userName},'%')
+        </if>
+        <if test="no != null">
+            AND account.no = #{no}
+        </if>
+        <if test="accountType != null">
+            AND account.account_type = #{accountType}
+        </if>
+        <if test="depositType != null">
+            AND account.deposit_type = #{depositType}
+        </if>
+        LIMIT #{pageNo},#{size}
+    </select>
+
+    <select id="queryAccountCount" resultType="int" parameterType="map">
+        SELECT COUNT(*)
+        FROM account JOIN client
+        ON account.user_id = client.id
+        JOIN interestdic
+        ON account.deposit_type = interestdic.deposit_type
+        WHERE client.create_counter = #{id}
+        <if test="userName != null">
+            AND client.user_name LIKE CONCAT('%',#{userName},'%')
+        </if>
+        <if test="no != null">
+            AND account.no = #{no}
+        </if>
+        <if test="accountType != null">
+            AND account.account_type = #{accountType}
+        </if>
+        <if test="depositType != null">
+            AND account.deposit_type = #{depositType}
+        </if>
+    </select>
+</mapper>

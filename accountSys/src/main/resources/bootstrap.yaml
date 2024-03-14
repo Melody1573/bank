@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    active: bank
+  application:
+    name: accountSys
+  ##配置服务发现、服务配置
+  cloud:
+    nacos:
+      username: nacos
+      password: nacos
+      discovery:
+        server-addr: 192.168.3.7:8848
+        ip: 192.168.3.157
+      config:
+        server-addr: 192.168.3.7:8848
+        ##定义配置文件的后缀
+        file-extension: yaml

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.banksys.accountsys.dao.TranslogMapper">
+
+    <select id="queryTransByPage" resultType="com.banksys.accountsys.model.VO.TranslogPageVO" parameterType="map">
+        SELECT *
+        FROM translog JOIN account
+        ON translog.acc_no = account.no || translog.counter_part = account.no
+        JOIN client
+        ON client.id = account.user_id
+        <where>
+            client.create_counter = #{id}
+            <if test="no != null">
+                AND translog.acc_no = #{no}
+            </if>
+            <if test="seqNo != null">
+                AND translog.seq_no = #{seqNo}
+            </if>
+            <if test="transType != null">
+                AND translog.trans_type = #{transType}
+            </if>
+        </where>
+        LIMIT #{pageNo},#{size}
+    </select>
+
+    <select id="queryTransCountByPage" resultType="java.lang.Integer" parameterType="map">
+        SELECT COUNT(*)
+        FROM translog JOIN account
+        ON translog.acc_no = account.no || translog.counter_part = account.no
+        JOIN client
+        ON client.id = account.user_id
+        <where>
+            client.create_counter = #{id}
+            <if test="no != null">
+                AND translog.acc_no = #{no}
+            </if>
+            <if test="seqNo != null">
+                AND translog.seq_no = #{seqNo}
+            </if>
+            <if test="transType != null">
+                AND translog.trans_type = #{transType}
+            </if>
+        </where>
+    </select>
+</mapper>
